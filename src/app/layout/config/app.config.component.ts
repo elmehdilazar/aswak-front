@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { LayoutService } from '../service/app.layout.service';
 import { MenuService } from '../app.menu.service';
+import {environment} from "../../../environments/environment";
 
 @Component({
     selector: 'app-config',
@@ -96,4 +97,6 @@ export class AppConfigComponent {
     incrementScale() {
         this.scale++;
     }
+
+    protected readonly environment = environment;
 }
