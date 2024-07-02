@@ -6,13 +6,15 @@ import {ProductsComponent} from "./pages/products/products.component";
 import {OrdersComponent} from "./pages/orders/orders.component";
 import {UsersComponent} from "./pages/users/users.component";
 import {LogsComponent} from "./pages/logs/logs.component";
+import {LoginComponent} from "./pages/auth/login/login.component";
 
 
 @NgModule({
     imports: [
         RouterModule.forRoot([
-            {
-                path: '', component: AppLayoutComponent,
+
+            {path:'login',component:LoginComponent},
+            {    path: '', component: AppLayoutComponent,
                 children: [
                     {path:"products",component:ProductsComponent},
                     {path:"orders",component:OrdersComponent},
