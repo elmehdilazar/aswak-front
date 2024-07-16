@@ -2,7 +2,21 @@
     <div class="flex flex-column align-items-center justify-content-center">
         <img src="https://www.aswakassalam.com/wp-content/uploads/2021/11/logo-1.png" alt="Sakai logo" class="mb-5 w-6rem flex-shrink-0">
         <div style="border-radius:56px; padding:0.3rem; background: linear-gradient(180deg, rgb(161, 192, 45) 10%, rgba(33, 150, 243, 0) 30%)">
+
+
+
             <div class="w-full surface-card py-8 px-5 sm:px-8" style="border-radius:53px">
+                <div *ngIf="this.errorMsg.length>0">
+
+                    <p-messages *ngFor=" this.messages of this.errorMsg"  [(value)]="messages" [enableService]="false" >
+                        <ng-template>
+                        <p>{{msg}}</p>
+                    </ng-template>
+
+                    </p-messages>
+                </div>
+
+
                 <div class="text-center mb-5">
 
                     <div class="text-900 text-3xl font-medium mb-3">login</div>
@@ -11,16 +25,16 @@
 
                 <div>
                     <label for="email1" class="block text-900 text-xl font-medium mb-2">Email</label>
-                    <input id="email1" type="text" placeholder="Email address" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
+                    <input id="email1" [(ngModel)]="authRequest.email" type="text" placeholder="Email address" pInputText class="w-full md:w-30rem mb-5" style="padding:1rem">
 
                     <label for="password1" class="block text-900 font-medium text-xl mb-2">Password</label>
-                    <p-password id="password1" [(ngModel)]="password" placeholder="Password" [toggleMask]="true" [feedback]="false" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
+                    <p-password id="password1" [(ngModel)]="authRequest.password" placeholder="Password" [toggleMask]="true" [feedback]="false" styleClass="mb-5" inputStyleClass="w-full p-3 md:w-30rem"></p-password>
 
                     <div class="flex align-items-center justify-content-between mb-5 gap-5">
 
 
                     </div>
-                    <button pButton pRipple label="Sign In" class="w-full bg-blue-700 p-3 text-xl" [routerLink]="['/']"></button>
+                    <button pButton pRipple label="Sign In" class="w-full bg-blue-700 p-3 text-xl" (click)="login()" ></button>
                 </div>
             </div>
         </div>
