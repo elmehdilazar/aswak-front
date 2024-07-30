@@ -11,12 +11,15 @@ import { EventService } from './demo/service/event.service';
 import { IconService } from './demo/service/icon.service';
 import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
+import {HttpTokenInterceptor} from "./services/interceptor/http-token.interceptor";
+
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
     imports: [AppRoutingModule, AppLayoutModule,HttpClientModule],
     providers: [
+        {provide:HTTP_INTERCEPTORS,useClass:HttpTokenInterceptor,multi:true},
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, ProductService,HttpClient
