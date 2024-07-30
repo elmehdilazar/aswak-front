@@ -56,7 +56,7 @@ this.authService.login({
         this.router.navigateByUrl("/");
     },
     error: (err)=> {
-        console.log(err);
+        console.log(err.error);
         if (err.error.validationErrors) {
             this.errorMsg = err.error.validationErrors;
             console.log(this.errorMsg);
