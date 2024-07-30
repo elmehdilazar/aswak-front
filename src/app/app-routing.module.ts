@@ -7,6 +7,7 @@ import {OrdersComponent} from "./pages/orders/orders.component";
 import {UsersComponent} from "./pages/users/users.component";
 import {LogsComponent} from "./pages/logs/logs.component";
 import {LoginComponent} from "./pages/auth/login/login.component";
+import {authGuard} from "./services/guard/auth.guard";
 
 
 @NgModule({
@@ -14,7 +15,7 @@ import {LoginComponent} from "./pages/auth/login/login.component";
         RouterModule.forRoot([
 
             {path:'login',component:LoginComponent},
-            {    path: '', component: AppLayoutComponent,
+            {    path: '', component: AppLayoutComponent,canActivate:[authGuard],
                 children: [
                     {path:"products",component:ProductsComponent},
                     {path:"orders",component:OrdersComponent},
