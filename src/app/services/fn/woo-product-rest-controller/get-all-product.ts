@@ -6,18 +6,13 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { Product } from '../../models/product';
 
-export interface UpdateProduct$Params {
-  id: number;
-      body: Product
+export interface GetAllProduct$Params {
 }
 
-export function updateProduct(http: HttpClient, rootUrl: string, params: UpdateProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<Product>> {
-  const rb = new RequestBuilder(rootUrl, updateProduct.PATH, 'put');
+export function getAllProduct(http: HttpClient, rootUrl: string, params?: GetAllProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  const rb = new RequestBuilder(rootUrl, getAllProduct.PATH, 'get');
   if (params) {
-    rb.path('id', params.id, {});
-    rb.body(params.body, 'application/json');
   }
 
   return http.request(
@@ -25,9 +20,9 @@ export function updateProduct(http: HttpClient, rootUrl: string, params: UpdateP
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<Product>;
+      return r as StrictHttpResponse<string>;
     })
   );
 }
 
-updateProduct.PATH = '/products/{id}';
+getAllProduct.PATH = '/woocommerce/products';

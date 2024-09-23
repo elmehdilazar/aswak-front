@@ -8,13 +8,15 @@ import { RequestBuilder } from '../../request-builder';
 
 import { Product } from '../../models/product';
 
-export interface CreateProduct$Params {
+export interface UpdateProduct1$Params {
+  id: number;
       body: Product
 }
 
-export function createProduct(http: HttpClient, rootUrl: string, params: CreateProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<Product>> {
-  const rb = new RequestBuilder(rootUrl, createProduct.PATH, 'post');
+export function updateProduct1(http: HttpClient, rootUrl: string, params: UpdateProduct1$Params, context?: HttpContext): Observable<StrictHttpResponse<Product>> {
+  const rb = new RequestBuilder(rootUrl, updateProduct1.PATH, 'put');
   if (params) {
+    rb.path('id', params.id, {});
     rb.body(params.body, 'application/json');
   }
 
@@ -28,4 +30,4 @@ export function createProduct(http: HttpClient, rootUrl: string, params: CreateP
   );
 }
 
-createProduct.PATH = '/products';
+updateProduct1.PATH = '/products/{id}';

@@ -8,12 +8,12 @@ import { RequestBuilder } from '../../request-builder';
 
 import { Order } from '../../models/order';
 
-export interface GetOrderById$Params {
+export interface GetOrderById1$Params {
   id: number;
 }
 
-export function getOrderById(http: HttpClient, rootUrl: string, params: GetOrderById$Params, context?: HttpContext): Observable<StrictHttpResponse<Order>> {
-  const rb = new RequestBuilder(rootUrl, getOrderById.PATH, 'get');
+export function getOrderById1(http: HttpClient, rootUrl: string, params: GetOrderById1$Params, context?: HttpContext): Observable<StrictHttpResponse<Order>> {
+  const rb = new RequestBuilder(rootUrl, getOrderById1.PATH, 'get');
   if (params) {
     rb.path('id', params.id, {});
   }
@@ -28,4 +28,4 @@ export function getOrderById(http: HttpClient, rootUrl: string, params: GetOrder
   );
 }
 
-getOrderById.PATH = '/orders/{id}';
+getOrderById1.PATH = '/orders/{id}';

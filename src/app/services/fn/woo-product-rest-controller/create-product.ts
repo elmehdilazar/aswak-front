@@ -6,21 +6,14 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { InterFaceCarte } from '../../models/inter-face-carte';
 
-export interface UpdateInterFaceCarte$Params {
-  id: number;
-  Filename: string;
-      body?: {
-'file': Blob;
-}
+export interface CreateProduct$Params {
+      body: string
 }
 
-export function updateInterFaceCarte(http: HttpClient, rootUrl: string, params: UpdateInterFaceCarte$Params, context?: HttpContext): Observable<StrictHttpResponse<InterFaceCarte>> {
-  const rb = new RequestBuilder(rootUrl, updateInterFaceCarte.PATH, 'put');
+export function createProduct(http: HttpClient, rootUrl: string, params: CreateProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  const rb = new RequestBuilder(rootUrl, createProduct.PATH, 'post');
   if (params) {
-    rb.query('id', params.id, {});
-    rb.query('Filename', params.Filename, {});
     rb.body(params.body, 'application/json');
   }
 
@@ -29,9 +22,9 @@ export function updateInterFaceCarte(http: HttpClient, rootUrl: string, params: 
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<InterFaceCarte>;
+      return r as StrictHttpResponse<string>;
     })
   );
 }
 
-updateInterFaceCarte.PATH = '/maps/{id}';
+createProduct.PATH = '/woocommerce/product';
