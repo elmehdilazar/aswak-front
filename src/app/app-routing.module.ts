@@ -8,6 +8,7 @@ import {UsersComponent} from "./pages/users/users.component";
 import {LogsComponent} from "./pages/logs/logs.component";
 import {LoginComponent} from "./pages/auth/login/login.component";
 import {authGuard} from "./services/guard/auth.guard";
+import {MapComponent} from "./pages/map/map.component";
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import {authGuard} from "./services/guard/auth.guard";
                     {path:"orders",component:OrdersComponent},
                     {path:"users",component:UsersComponent},
                     {path:"logs",component:LogsComponent},
+                    {path:"maps",component:MapComponent},
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
                     { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },

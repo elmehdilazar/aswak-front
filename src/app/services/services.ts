@@ -1,3 +1,5 @@
+export { WooProductRestControllerService } from './services/woo-product-rest-controller.service';
+export { WooOrderRestControllerService } from './services/woo-order-rest-controller.service';
 export { UserResetControllerService } from './services/user-reset-controller.service';
 export { TicketRestControllerService } from './services/ticket-rest-controller.service';
 export { ProductRestControllerService } from './services/product-rest-controller.service';

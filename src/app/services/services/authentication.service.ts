@@ -51,7 +51,7 @@ export class AuthenticationService extends BaseService {
   }
 
   /** Path part for operation `login()` */
-  static readonly LoginPath = '/auth/login';
+  static readonly LoginPath = '/auth/';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

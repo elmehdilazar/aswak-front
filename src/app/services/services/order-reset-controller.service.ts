@@ -15,11 +15,11 @@ import { deleteOrder } from '../fn/order-reset-controller/delete-order';
 import { DeleteOrder$Params } from '../fn/order-reset-controller/delete-order';
 import { getAllOrders } from '../fn/order-reset-controller/get-all-orders';
 import { GetAllOrders$Params } from '../fn/order-reset-controller/get-all-orders';
-import { getOrderById } from '../fn/order-reset-controller/get-order-by-id';
-import { GetOrderById$Params } from '../fn/order-reset-controller/get-order-by-id';
+import { getOrderById1 } from '../fn/order-reset-controller/get-order-by-id-1';
+import { GetOrderById1$Params } from '../fn/order-reset-controller/get-order-by-id-1';
 import { Order } from '../models/order';
-import { updateOrder } from '../fn/order-reset-controller/update-order';
-import { UpdateOrder$Params } from '../fn/order-reset-controller/update-order';
+import { updateOrder1 } from '../fn/order-reset-controller/update-order-1';
+import { UpdateOrder1$Params } from '../fn/order-reset-controller/update-order-1';
 
 @Injectable({ providedIn: 'root' })
 export class OrderResetControllerService extends BaseService {
@@ -27,52 +27,52 @@ export class OrderResetControllerService extends BaseService {
     super(config, http);
   }
 
-  /** Path part for operation `getOrderById()` */
-  static readonly GetOrderByIdPath = '/orders/{id}';
+  /** Path part for operation `getOrderById1()` */
+  static readonly GetOrderById1Path = '/orders/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getOrderById()` instead.
+   * To access only the response body, use `getOrderById1()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getOrderById$Response(params: GetOrderById$Params, context?: HttpContext): Observable<StrictHttpResponse<Order>> {
-    return getOrderById(this.http, this.rootUrl, params, context);
+  getOrderById1$Response(params: GetOrderById1$Params, context?: HttpContext): Observable<StrictHttpResponse<Order>> {
+    return getOrderById1(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `getOrderById$Response()` instead.
+   * To access the full response (for headers, for example), `getOrderById1$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  getOrderById(params: GetOrderById$Params, context?: HttpContext): Observable<Order> {
-    return this.getOrderById$Response(params, context).pipe(
+  getOrderById1(params: GetOrderById1$Params, context?: HttpContext): Observable<Order> {
+    return this.getOrderById1$Response(params, context).pipe(
       map((r: StrictHttpResponse<Order>): Order => r.body)
     );
   }
 
-  /** Path part for operation `updateOrder()` */
-  static readonly UpdateOrderPath = '/orders/{id}';
+  /** Path part for operation `updateOrder1()` */
+  static readonly UpdateOrder1Path = '/orders/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `updateOrder()` instead.
+   * To access only the response body, use `updateOrder1()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  updateOrder$Response(params: UpdateOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<Order>> {
-    return updateOrder(this.http, this.rootUrl, params, context);
+  updateOrder1$Response(params: UpdateOrder1$Params, context?: HttpContext): Observable<StrictHttpResponse<Order>> {
+    return updateOrder1(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `updateOrder$Response()` instead.
+   * To access the full response (for headers, for example), `updateOrder1$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  updateOrder(params: UpdateOrder$Params, context?: HttpContext): Observable<Order> {
-    return this.updateOrder$Response(params, context).pipe(
+  updateOrder1(params: UpdateOrder1$Params, context?: HttpContext): Observable<Order> {
+    return this.updateOrder1$Response(params, context).pipe(
       map((r: StrictHttpResponse<Order>): Order => r.body)
     );
   }

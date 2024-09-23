@@ -2,7 +2,158 @@
     <div class="col-12">
         <div class="card">
             <h4>Orders</h4>
-            <p>This is your empty page template to start building beautiful applications.</p>
+            <p-table #dt1  [value]="Orders" dataKey="id" [rows]="5" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true"  [rowsPerPageOptions]="[5, 10, 20]" [globalFilterFields]="['id','name','stock_status','price','categories.name','image']" responsiveLayout="scroll">
+                <ng-template pTemplate="caption">
+                    <div class="flex justify-content-between flex-column sm:flex-row">
+                        <div class="mb-2">
+                            <button pButton label="Clear" class="p-button-outlined mx-2 " icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                        </div>
+
+                        <span class="p-input-icon-left mb-2">
+							<i class="pi pi-search"></i>
+							<input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Keyword" class="w-full"/>
+						</span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                id
+                                <p-columnFilter type="numeric" field="id" display="menu" placeholder="Search by id"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                name
+                                <p-columnFilter type="text" field="name" display="menu" placeholder="Search by name"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                stock status
+                                <p-columnFilter type="text" field="stock_status" display="menu" placeholder="Search by stock_status"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div class="flex justify-content-between align-items-center">
+                                price
+                                <p-columnFilter type="numeric" field="price" display="menu" placeholder="search by price"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div class="flex justify-content-between align-items-center">
+                                category
+                                <p-columnFilter type="text" field="categories.name" display="menu" placeholder="Search by category"></p-columnFilter>
+                            </div>
+                        </th>
+
+
+                        <th style="min-width: 8rem">
+                            <div class="flex justify-content-between align-items-center">
+
+products
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div class="flex justify-content-between align-items-center">
+                                action
+
+                            </div>
+                        </th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-order>
+                    <tr>
+                        <td>
+                            {{order.id}}
+                        </td>
+                       <td>
+                           {{ order.billing.first_name+" "+order.billing.last_name}}
+                       </td>
+                        <td>
+                            <p-tag [value]="order.status" [severity]="getSeverity(order.status)" />
+
+                        </td>
+                        <td>
+                            {{order.total}}
+                        </td>
+                        <td>
+                            {{ order.date_created_gmt | date: "dd/mm/yyyy"}}
+                        </td>
+                        <td>
+                            <p-button  (onClick)="showDialog(order.line_items)"
+                                       label="products"
+                                icon="pi pi-box"
+                                badge="{{order.line_items.length}}"
+                                severity="help"
+                                 />
+
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"  ></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"  ></button>
+                            </div>
+                        </td>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">No orders found.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="8">Loading orders data. Please wait.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
         </div>
     </div>
+
+    <p-dialog
+        header="Products"
+        [(visible)]="visible"
+        [modal]="true"
+        [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+        [style]="{ width: '50vw' }"
+        [draggable]="false"
+        [resizable]="false">
+
+        <p-carousel
+            [value]="productsCoresel"
+            [numVisible]="3"
+            [numScroll]="3"
+            [circular]="false"
+            [responsiveOptions]="responsiveOptions">
+            <ng-template let-product pTemplate="item">
+                <div class="border-1 surface-border border-round m-2 p-3">
+                    <div class="mb-3">
+                        <div class="relative mx-auto">
+                            <img
+                                src="{{ product.image.src }}"
+                                [alt]="product.name"
+                                class="w-full border-round" />
+
+                        </div>
+                    </div>
+                    <div class="mb-3 font-medium">
+                        {{ product.name }}
+                    </div>
+                    <div class="flex justify-content-between align-items-center">
+                        <div class="mt-0 font-semibold text-xl">
+                            {{ '$' + product.price }}
+                        </div>
+
+                    </div>
+                </div>
+            </ng-template>
+        </p-carousel>
+
+
+    </p-dialog>
 </div>

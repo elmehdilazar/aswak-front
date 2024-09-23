@@ -9,12 +9,16 @@ import { RequestBuilder } from '../../request-builder';
 import { InterFaceCarte } from '../../models/inter-face-carte';
 
 export interface CreateInterFaceCarte$Params {
-      body: InterFaceCarte
+  Filename: string;
+      body?: {
+'file': Blob;
+}
 }
 
 export function createInterFaceCarte(http: HttpClient, rootUrl: string, params: CreateInterFaceCarte$Params, context?: HttpContext): Observable<StrictHttpResponse<InterFaceCarte>> {
   const rb = new RequestBuilder(rootUrl, createInterFaceCarte.PATH, 'post');
   if (params) {
+    rb.query('Filename', params.Filename, {});
     rb.body(params.body, 'application/json');
   }
 

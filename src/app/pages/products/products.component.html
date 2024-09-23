@@ -2,7 +2,128 @@
     <div class="col-12">
         <div class="card">
             <h4>products</h4>
-            <p>This is your empty page template to start building beautiful applications.</p>
+            <p-table #dt1  [value]="Product" dataKey="id" [rows]="5" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true"  [rowsPerPageOptions]="[5, 10, 20]" [globalFilterFields]="['id','name','stock_status','price','categories.name','image']" responsiveLayout="scroll">
+                <ng-template pTemplate="caption">
+                    <div class="flex justify-content-between flex-column sm:flex-row">
+                        <div class="mb-2">
+                            <button pButton label="Clear" class="p-button-outlined mx-2 " icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                        </div>
+
+                        <span class="p-input-icon-left mb-2">
+							<i class="pi pi-search"></i>
+							<input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Keyword" class="w-full"/>
+						</span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                id
+                                <p-columnFilter type="numeric" field="id" display="menu" placeholder="Search by id"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                name
+                                <p-columnFilter type="text" field="name" display="menu" placeholder="Search by name"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                stock status
+                                <p-columnFilter type="text" field="stock_status" display="menu" placeholder="Search by stock_status"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div class="flex justify-content-between align-items-center">
+                                price
+                                <p-columnFilter type="numeric" field="price" display="menu" placeholder="search by price"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div class="flex justify-content-between align-items-center">
+                                category
+                                <p-columnFilter type="text" field="categories.name" display="menu" placeholder="Search by category"></p-columnFilter>
+                            </div>
+                        </th>
+
+                        <th style="min-width: 8rem">
+                            <div class="flex justify-content-between align-items-center">
+                                location
+
+                            </div>
+                        </th>
+                        <th style="min-width: 8rem">
+                            <div class="flex justify-content-between align-items-center">
+                                image
+
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div class="flex justify-content-between align-items-center">
+                                action
+
+                            </div>
+                        </th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>
+                            {{product.id}}
+                        </td>
+                        <td>
+                            {{product.name}}
+                        </td>
+                        <td>
+                            <p-tag [value]="product.stock_status" [severity]="getSeverity(product.inventoryStatus)" />
+
+                        </td>
+                        <td>
+                            {{product.price}}
+                        </td>
+                        <td>
+                            <span *ngFor="let cat of product.categories"> {{cat.name}}</span>
+                        </td>
+                        <td>
+
+                            <p-image
+                                [src]="environment.backendhost+'/mapsimage/'+product.categories[0].slug+'.png'"
+                                alt="Image"
+                                width="100"
+                                [preview]="true" />
+                        </td>
+                        <td>
+
+                            <p-image
+                                [src]="product.images[0].src"
+                                alt="Image"
+                                width="100"
+                                [preview]="true" />
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"  ></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"  ></button>
+                            </div>
+                        </td>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">No users found.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="8">Loading products data. Please wait.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+
         </div>
     </div>
 </div>

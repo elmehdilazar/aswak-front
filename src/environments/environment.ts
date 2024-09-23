@@ -4,7 +4,8 @@
 
 export const environment = {
   production: true,
-    backendhost:"http://localhost:8080/api/v1"
+    backendhost:"http://localhost:8080/api/v1",
+    urlimages:"http://localhost:8080"
 };
 
 /*

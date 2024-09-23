@@ -29,4 +29,4 @@ export function login(http: HttpClient, rootUrl: string, params: Login$Params, c
   );
 }
 
-login.PATH = '/auth/login';
+login.PATH = '/auth/';

@@ -39,9 +39,7 @@ export class LoginComponent implements OnInit{
 constructor(private router:Router,private authService:AuthenticationService, private tokenService: TokenService) {
 }
     ngOnInit(): void {
-        this.messages = [
-            { severity: 'error', detail: ""},
-        ];
+       this.messages=[];
     }
 
 

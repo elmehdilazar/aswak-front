@@ -20,6 +20,8 @@ import { GetInterFaceCarteById$Params } from '../fn/inter-face-carte-rest-contro
 import { InterFaceCarte } from '../models/inter-face-carte';
 import { updateInterFaceCarte } from '../fn/inter-face-carte-rest-controller/update-inter-face-carte';
 import { UpdateInterFaceCarte$Params } from '../fn/inter-face-carte-rest-controller/update-inter-face-carte';
+import { uploadImage } from '../fn/inter-face-carte-rest-controller/upload-image';
+import { UploadImage$Params } from '../fn/inter-face-carte-rest-controller/upload-image';
 
 @Injectable({ providedIn: 'root' })
 export class InterFaceCarteRestControllerService extends BaseService {
@@ -149,6 +151,31 @@ export class InterFaceCarteRestControllerService extends BaseService {
   createInterFaceCarte(params: CreateInterFaceCarte$Params, context?: HttpContext): Observable<InterFaceCarte> {
     return this.createInterFaceCarte$Response(params, context).pipe(
       map((r: StrictHttpResponse<InterFaceCarte>): InterFaceCarte => r.body)
+    );
+  }
+
+  /** Path part for operation `uploadImage()` */
+  static readonly UploadImagePath = '/maps/upload';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `uploadImage()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  uploadImage$Response(params: UploadImage$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+    return uploadImage(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `uploadImage$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  uploadImage(params: UploadImage$Params, context?: HttpContext): Observable<string> {
+    return this.uploadImage$Response(params, context).pipe(
+      map((r: StrictHttpResponse<string>): string => r.body)
     );
   }
 

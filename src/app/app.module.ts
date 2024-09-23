@@ -13,6 +13,7 @@ import { NodeService } from './demo/service/node.service';
 import { PhotoService } from './demo/service/photo.service';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
 import {HttpTokenInterceptor} from "./services/interceptor/http-token.interceptor";
+import {MessagesModule} from "primeng/messages";
 
 
 @NgModule({
@@ -22,7 +23,7 @@ import {HttpTokenInterceptor} from "./services/interceptor/http-token.intercepto
         {provide:HTTP_INTERCEPTORS,useClass:HttpTokenInterceptor,multi:true},
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
-        PhotoService, ProductService,HttpClient
+        PhotoService, ProductService,HttpClient,MessagesModule
     ],
     bootstrap: [AppComponent],
 })

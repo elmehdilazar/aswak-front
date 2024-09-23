@@ -4,6 +4,8 @@ import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
+import { WooProductRestControllerService } from './services/woo-product-rest-controller.service';
+import { WooOrderRestControllerService } from './services/woo-order-rest-controller.service';
 import { UserResetControllerService } from './services/user-reset-controller.service';
 import { TicketRestControllerService } from './services/ticket-rest-controller.service';
 import { ProductRestControllerService } from './services/product-rest-controller.service';
@@ -20,6 +22,8 @@ import { AuthenticationService } from './services/authentication.service';
   exports: [],
   declarations: [],
   providers: [
+    WooProductRestControllerService,
+    WooOrderRestControllerService,
     UserResetControllerService,
     TicketRestControllerService,
     ProductRestControllerService,

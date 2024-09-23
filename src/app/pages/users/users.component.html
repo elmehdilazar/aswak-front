@@ -1,12 +1,16 @@
 <div class="grid">
     <div class="col-12">
         <div class="card">
-
+            <p-messages [value]="msgs"></p-messages>
             <h5>All Users</h5>
-            <p-table #dt1  [lazy]="true" [value]="users" dataKey="id" [rows]="10" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true"  [rowsPerPageOptions]="[5, 10, 20]" [globalFilterFields]="['id','firstName','lastName','email','role','emplyedID']" responsiveLayout="scroll">
+            <p-table #dt1  [value]="users" dataKey="id" [rows]="5" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true"  [rowsPerPageOptions]="[5, 10, 20]" [globalFilterFields]="['id','firstName','lastName','email','role','emplyedID']" responsiveLayout="scroll">
                 <ng-template pTemplate="caption">
                     <div class="flex justify-content-between flex-column sm:flex-row">
-                        <button pButton label="Clear" class="p-button-outlined mb-2" icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                        <div class="mb-2">
+                            <button pButton label="Clear" class="p-button-outlined mx-2 " icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewUser()"></button>
+                        </div>
+
                         <span class="p-input-icon-left mb-2">
 							<i class="pi pi-search"></i>
 							<input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Keyword" class="w-full"/>
@@ -84,8 +88,8 @@
                         </td>
                         <td>
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" ></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" ></button>
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(user)" ></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteUser(user.id)" ></button>
                             </div>
                         </td>
 
@@ -105,4 +109,51 @@
         </div>
 
     </div>
+    <p-dialog [(visible)]="userDialogue" [style]="{width: '450px'}" header="User " [modal]="true" class="p-fluid">
+
+        <ng-template pTemplate="content">
+            <div class="field">
+                <label for="firstname">firstname</label>
+                <input type="text" pInputText id="firstname" [(ngModel)]="user.firstName" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.firstName}"/>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.firstName">firstname is required.</small>
+            </div>
+            <div class="field">
+                <label for="lastname">lastname</label>
+                <input type="text" pInputText id="lastname" [(ngModel)]="user.lastName" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.lastName}"/>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.lastName">lastname is required.</small>
+            </div>
+            <div class="field">
+                <label for="email">email</label>
+                <input type="text" pInputText id="email" [(ngModel)]="user.email" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.email}"/>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.email">email is required.</small>
+            </div>
+            <div class="field">
+                <label for="role">role</label>
+                <p-dropdown id="role" required [showClear]="true" [ngClass]="{'ng-invalid ng-dirty' : submitted && selectRole.value===''}" [(ngModel)]="selectRole.value" [options]="roles">
+                </p-dropdown>
+
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && selectRole.value===''">role is required.</small>
+            </div>
+            <div class="field">
+                <label for="password">password</label>
+                <p-password  id="password" [toggleMask]="true"  [(ngModel)]="user.password" required  [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.password}" />
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.password">password is required.</small>
+            </div>
+            <div class="field">
+                <label for="employedID">employed ID</label>
+                <input type="text" pInputText id="employedID" [(ngModel)]="user.employedID" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.employedID}"/>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.employedID">firstname is required.</small>
+            </div>
+            <div class="field">
+                <label for="imageurl">image url</label>
+                <input type="text" pInputText id="imageurl" [(ngModel)]="user.urlimage" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.urlimage}"/>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.urlimage">url image is required.</small>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="user.id?updateUser(user):saveUser()"></button>
+        </ng-template>
+    </p-dialog>
 </div>

@@ -10,8 +10,8 @@
 
                     <p-messages *ngFor=" this.messages of this.errorMsg"  [(value)]="messages" [enableService]="false" >
                         <ng-template>
-                        <p>{{msg}}</p>
-                    </ng-template>
+                        <p>{{this.messages}}</p>
+                        </ng-template>
 
                     </p-messages>
                 </div>

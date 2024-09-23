@@ -9,10 +9,10 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { createProduct } from '../fn/product-rest-controller/create-product';
-import { CreateProduct$Params } from '../fn/product-rest-controller/create-product';
-import { deleteProduct } from '../fn/product-rest-controller/delete-product';
-import { DeleteProduct$Params } from '../fn/product-rest-controller/delete-product';
+import { createProduct1 } from '../fn/product-rest-controller/create-product-1';
+import { CreateProduct1$Params } from '../fn/product-rest-controller/create-product-1';
+import { deleteProduct1 } from '../fn/product-rest-controller/delete-product-1';
+import { DeleteProduct1$Params } from '../fn/product-rest-controller/delete-product-1';
 import { getAllProducts } from '../fn/product-rest-controller/get-all-products';
 import { GetAllProducts$Params } from '../fn/product-rest-controller/get-all-products';
 import { getProductById } from '../fn/product-rest-controller/get-product-by-id';
@@ -24,8 +24,8 @@ import { GetProductsByCode$Params } from '../fn/product-rest-controller/get-prod
 import { getProductsByMarque } from '../fn/product-rest-controller/get-products-by-marque';
 import { GetProductsByMarque$Params } from '../fn/product-rest-controller/get-products-by-marque';
 import { Product } from '../models/product';
-import { updateProduct } from '../fn/product-rest-controller/update-product';
-import { UpdateProduct$Params } from '../fn/product-rest-controller/update-product';
+import { updateProduct1 } from '../fn/product-rest-controller/update-product-1';
+import { UpdateProduct1$Params } from '../fn/product-rest-controller/update-product-1';
 
 @Injectable({ providedIn: 'root' })
 export class ProductRestControllerService extends BaseService {
@@ -58,52 +58,52 @@ export class ProductRestControllerService extends BaseService {
     );
   }
 
-  /** Path part for operation `updateProduct()` */
-  static readonly UpdateProductPath = '/products/{id}';
+  /** Path part for operation `updateProduct1()` */
+  static readonly UpdateProduct1Path = '/products/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `updateProduct()` instead.
+   * To access only the response body, use `updateProduct1()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  updateProduct$Response(params: UpdateProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<Product>> {
-    return updateProduct(this.http, this.rootUrl, params, context);
+  updateProduct1$Response(params: UpdateProduct1$Params, context?: HttpContext): Observable<StrictHttpResponse<Product>> {
+    return updateProduct1(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `updateProduct$Response()` instead.
+   * To access the full response (for headers, for example), `updateProduct1$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  updateProduct(params: UpdateProduct$Params, context?: HttpContext): Observable<Product> {
-    return this.updateProduct$Response(params, context).pipe(
+  updateProduct1(params: UpdateProduct1$Params, context?: HttpContext): Observable<Product> {
+    return this.updateProduct1$Response(params, context).pipe(
       map((r: StrictHttpResponse<Product>): Product => r.body)
     );
   }
 
-  /** Path part for operation `deleteProduct()` */
-  static readonly DeleteProductPath = '/products/{id}';
+  /** Path part for operation `deleteProduct1()` */
+  static readonly DeleteProduct1Path = '/products/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `deleteProduct()` instead.
+   * To access only the response body, use `deleteProduct1()` instead.
    *
    * This method doesn't expect any request body.
    */
-  deleteProduct$Response(params: DeleteProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return deleteProduct(this.http, this.rootUrl, params, context);
+  deleteProduct1$Response(params: DeleteProduct1$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deleteProduct1(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `deleteProduct$Response()` instead.
+   * To access the full response (for headers, for example), `deleteProduct1$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  deleteProduct(params: DeleteProduct$Params, context?: HttpContext): Observable<void> {
-    return this.deleteProduct$Response(params, context).pipe(
+  deleteProduct1(params: DeleteProduct1$Params, context?: HttpContext): Observable<void> {
+    return this.deleteProduct1$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
@@ -133,27 +133,27 @@ export class ProductRestControllerService extends BaseService {
     );
   }
 
-  /** Path part for operation `createProduct()` */
-  static readonly CreateProductPath = '/products';
+  /** Path part for operation `createProduct1()` */
+  static readonly CreateProduct1Path = '/products';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `createProduct()` instead.
+   * To access only the response body, use `createProduct1()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createProduct$Response(params: CreateProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<Product>> {
-    return createProduct(this.http, this.rootUrl, params, context);
+  createProduct1$Response(params: CreateProduct1$Params, context?: HttpContext): Observable<StrictHttpResponse<Product>> {
+    return createProduct1(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `createProduct$Response()` instead.
+   * To access the full response (for headers, for example), `createProduct1$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  createProduct(params: CreateProduct$Params, context?: HttpContext): Observable<Product> {
-    return this.createProduct$Response(params, context).pipe(
+  createProduct1(params: CreateProduct1$Params, context?: HttpContext): Observable<Product> {
+    return this.createProduct1$Response(params, context).pipe(
       map((r: StrictHttpResponse<Product>): Product => r.body)
     );
   }
