@@ -73,7 +73,7 @@ products
                            {{ order.billing.first_name+" "+order.billing.last_name}}
                        </td>
                         <td>
-                            <p-tag [value]="order.status" [severity]="getSeverity(order.status)" />
+                            <p-tag (click)="showDialogSatsus(order.status,order.id)" [value]="order.status" [severity]="getSeverity(order.status)" />
 
                         </td>
                         <td>
@@ -156,4 +156,29 @@ products
 
 
     </p-dialog>
+
+    <p-dialog header="Update Order Status" [modal]="true" [(visible)]="visibleStatus" [style]="{ width: '25rem' ,height:'30em' }" [draggable]="false" [resizable]="false">
+        <span class="p-text-secondary block mb-5">Select new status for the order:</span>
+
+        <!-- Dropdown for status selection -->
+        <p-dropdown [options]="statuses" [(ngModel)]="statusOrderUpdate" placeholder="Select a status">
+            <!-- Template for displaying the selected item -->
+
+
+            <!-- Template for displaying each dropdown item -->
+            <ng-template let-option pTemplate="item">
+                <p-tag  [value]="option.value" [severity]="getSeverity( option.value)" />
+
+            </ng-template>
+        </p-dropdown>
+
+<ng-template pTemplate="footer">
+    <div class="flex justify-content-end gap-2 mt-4">
+        <p-button label="Cancel" severity="secondary" (onClick)="visibleStatus = false" />
+        <p-button label="Save" (onClick)="updateOrderStatus()" />
+    </div>
+</ng-template>
+
+    </p-dialog>
+
 </div>

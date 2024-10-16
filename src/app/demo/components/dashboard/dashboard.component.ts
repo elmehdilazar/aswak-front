@@ -4,6 +4,8 @@ import { Product } from '../../api/product';
 import { ProductService } from '../../service/product.service';
 import { Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import {WooCOunt} from "../../../modules/WooCOunt";
+import {WooCommerceService} from "../../../pages/services/woo-commerce.service";
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -13,14 +15,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     items!: MenuItem[];
 
     products!: Product[];
-
+Counts:WooCOunt={ countOrder:0,countProduct:0,countCustomer:0,countUser:0};
     chartData: any;
 
     chartOptions: any;
 
     subscription!: Subscription;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService) {
+    constructor(private productService: ProductService, public layoutService: LayoutService , private WooServcie:WooCommerceService) {
         this.subscription = this.layoutService.configUpdate$
         .pipe(debounceTime(25))
         .subscribe((config) => {
@@ -29,6 +31,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.WooServcie.getCount().subscribe(
+            {
+                next: value => {
+                    this.Counts={ countOrder:value.body.productCount,countProduct:value.body.orderCount,countUser:value.body.userCount,countCustomer:value.body.customerCount}
+                },
+                error: err => {
+                   console.log(err);
+                }
+            }
+        )
         this.initChart();
         this.productService.getProductsSmall().then(data => this.products = data);
 

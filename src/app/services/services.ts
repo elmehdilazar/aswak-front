@@ -7,3 +7,4 @@ export { OrderResetControllerService } from './services/order-reset-controller.s
 export { InterFaceCarteRestControllerService } from './services/inter-face-carte-rest-controller.service';
 export { LogRestControllerService } from './services/log-rest-controller.service';
 export { AuthenticationService } from './services/authentication.service';
+export { DashhboardContollerService } from './services/dashhboard-contoller.service';

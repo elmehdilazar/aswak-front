@@ -194,4 +194,5 @@ this.mapsI.deleteMap(id).subscribe({
     }
 
     protected readonly environment = environment;
+
 }

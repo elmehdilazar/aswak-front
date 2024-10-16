@@ -10,6 +10,9 @@ import {Table, TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {DialogModule} from "primeng/dialog";
 import {CarouselModule} from "primeng/carousel";
+import {DropdownModule} from "primeng/dropdown";
+import {FormsModule} from "@angular/forms";
+
 
 
 @Component({
@@ -26,13 +29,17 @@ import {CarouselModule} from "primeng/carousel";
         TagModule,
         DatePipe,
         DialogModule,
-        CarouselModule
+        CarouselModule,
+        DropdownModule,
+        FormsModule
     ],
     templateUrl: './orders.component.html',
     styleUrl: './orders.component.scss'
 })
 export class OrdersComponent implements OnInit {
     Orders: any;
+statusOrderUpdate:string;
+OrderUpadateId:string;
 
 
     statuses: any[] = [];
@@ -60,17 +67,17 @@ export class OrdersComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.orderService.getAllOrders().subscribe({
-            next: value => {
-                console.log(value);
-                this.Orders = value.body;
-                this.loading = false;
-            },
-            error: err => {
 
-            }
-        });
-
+        this.refreshOrders();
+        this.statuses = [
+            { label: 'Pending', value: 'pending' },
+            { label: 'Processing', value: 'processing' },
+            { label: 'On Hold', value: 'on-hold' },
+            { label: 'Completed', value: 'completed' },
+            { label: 'Cancelled', value: 'cancelled' },
+            { label: 'Refunded', value: 'refunded' },
+            { label: 'Failed', value: 'failed' }
+        ];
         this.responsiveOptions = [
             {
                 breakpoint: '1199px',
@@ -124,11 +131,49 @@ export class OrdersComponent implements OnInit {
         }
     }
     visible: boolean = false;
+    visibleStatus: boolean=false;
 
 
 
     showDialog(products) {
         this.visible = true;
         this.showCaresel(products);
+    }
+
+    showDialogSatsus(status, id) {
+        this.visibleStatus = true;
+        this.statusOrderUpdate=status;
+        this.OrderUpadateId=id;
+
+    }
+
+
+    updateOrderStatus(): void {
+        if (!this.statusOrderUpdate || !this.OrderUpadateId) return;
+
+        this.orderService.updateOrderStatus$Response(this.OrderUpadateId, this.statusOrderUpdate).subscribe({
+            next: response => {
+                console.log('Order status updated successfully:', response.body);
+                this.visibleStatus = false;  // Close the dialog on success
+                this.refreshOrders();  // Optionally refresh the order list after update
+            },
+            error: err => {
+                console.error('Error updating order status:', err);
+            }
+        });
+    }
+
+
+    private refreshOrders() {
+        this.orderService.getAllOrders().subscribe({
+            next: value => {
+                console.log(value);
+                this.Orders = value.body;
+                this.loading = false;
+            },
+            error: err => {
+console.log(err);
+            }
+        });
     }
 }

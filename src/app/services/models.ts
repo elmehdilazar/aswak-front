@@ -10,3 +10,4 @@ export { Product } from './models/product';
 export { RegistrationRequest } from './models/registration-request';
 export { Ticket } from './models/ticket';
 export { User } from './models/user';
+export { WooCommerceCountsDto } from './models/woo-commerce-counts-dto';

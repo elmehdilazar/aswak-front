@@ -13,6 +13,7 @@ import { OrderResetControllerService } from './services/order-reset-controller.s
 import { InterFaceCarteRestControllerService } from './services/inter-face-carte-rest-controller.service';
 import { LogRestControllerService } from './services/log-rest-controller.service';
 import { AuthenticationService } from './services/authentication.service';
+import { DashhboardContollerService } from './services/dashhboard-contoller.service';
 
 /**
  * Module that provides all services and configuration.
@@ -31,6 +32,7 @@ import { AuthenticationService } from './services/authentication.service';
     InterFaceCarteRestControllerService,
     LogRestControllerService,
     AuthenticationService,
+    DashhboardContollerService,
     ApiConfiguration
   ],
 })

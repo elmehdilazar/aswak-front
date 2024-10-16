@@ -19,7 +19,7 @@ export interface UpdateInterFaceCarte$Params {
 export function updateInterFaceCarte(http: HttpClient, rootUrl: string, params: UpdateInterFaceCarte$Params, context?: HttpContext): Observable<StrictHttpResponse<InterFaceCarte>> {
   const rb = new RequestBuilder(rootUrl, updateInterFaceCarte.PATH, 'put');
   if (params) {
-    rb.query('id', params.id, {});
+    rb.path('id', params.id, {});
     rb.query('Filename', params.Filename, {});
     rb.body(params.body, 'application/json');
   }

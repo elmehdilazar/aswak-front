@@ -15,6 +15,8 @@ import { getOrderById } from '../fn/woo-order-rest-controller/get-order-by-id';
 import { GetOrderById$Params } from '../fn/woo-order-rest-controller/get-order-by-id';
 import { updateOrder } from '../fn/woo-order-rest-controller/update-order';
 import { UpdateOrder$Params } from '../fn/woo-order-rest-controller/update-order';
+import { updateOrderStatus } from '../fn/woo-order-rest-controller/update-order-status';
+import { UpdateOrderStatus$Params } from '../fn/woo-order-rest-controller/update-order-status';
 
 @Injectable({ providedIn: 'root' })
 export class WooOrderRestControllerService extends BaseService {
@@ -68,6 +70,31 @@ export class WooOrderRestControllerService extends BaseService {
    */
   updateOrder(params: UpdateOrder$Params, context?: HttpContext): Observable<string> {
     return this.updateOrder$Response(params, context).pipe(
+      map((r: StrictHttpResponse<string>): string => r.body)
+    );
+  }
+
+  /** Path part for operation `updateOrderStatus()` */
+  static readonly UpdateOrderStatusPath = '/woocommerce/orders/{id}/status';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `updateOrderStatus()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  updateOrderStatus$Response(params: UpdateOrderStatus$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+    return updateOrderStatus(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `updateOrderStatus$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  updateOrderStatus(params: UpdateOrderStatus$Params, context?: HttpContext): Observable<string> {
+    return this.updateOrderStatus$Response(params, context).pipe(
       map((r: StrictHttpResponse<string>): string => r.body)
     );
   }
