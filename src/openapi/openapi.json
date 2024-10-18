@@ -1505,7 +1505,12 @@
                         "type": "string"
                     },
                     "status": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": [
+                            "ONHOLD",
+                            "OPEN",
+                            "CLOSED"
+                        ]
                     },
                     "user": {
                         "$ref": "#/components/schemas/User"

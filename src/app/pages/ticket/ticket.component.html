@@ -1,0 +1,145 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card">
+            <p-messages [value]="msgs"></p-messages>
+            <h5>All Users</h5>
+            <p-table #dt1  [value]="tickets" dataKey="id" [rows]="5" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true"  [rowsPerPageOptions]="[5, 10, 20]" [globalFilterFields]="['id','description','status','subject','user']" responsiveLayout="scroll">
+                <ng-template pTemplate="caption">
+                    <div class="flex justify-content-between flex-column sm:flex-row">
+                        <div class="mb-2">
+                            <button pButton label="Clear" class="p-button-outlined mx-2 " icon="pi pi-filter-slash" (click)="clear(dt1)"></button>
+                            <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNewUser()"></button>
+                        </div>
+
+                        <span class="p-input-icon-left mb-2">
+							<i class="pi pi-search"></i>
+							<input pInputText type="text" #filter (input)="onGlobalFilter(dt1, $event)" placeholder="Search Keyword" class="w-full"/>
+						</span>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                id
+                                <p-columnFilter type="numeric" field="id" display="menu" placeholder="Search by id"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                description
+                                <p-columnFilter type="text" field="firstName" display="menu" placeholder="Search by firstname"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 12rem">
+                            <div class="flex justify-content-between align-items-center">
+                                status
+                                <p-columnFilter type="text" field="lastName" display="menu" placeholder="Search by lastname"></p-columnFilter>
+                            </div>
+                        </th>
+
+
+
+                        <th style="min-width: 8rem">
+                            <div class="flex justify-content-between align-items-center">
+                                user
+                                <p-columnFilter type="text" field="emplyedID" display="menu" placeholder="Search by emplyedID"></p-columnFilter>
+                            </div>
+                        </th>
+                        <th style="min-width: 10rem">
+                            <div class="flex justify-content-between align-items-center">
+                                action
+
+                            </div>
+                        </th>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-ticket>
+                    <tr>
+                        <td>
+                            {{ticket.id}}
+                        </td>
+                        <td>
+                            {{ticket.description}}
+                        </td>
+                        <td>
+                            <p-tag [value]="ticket.status" [severity]="getSeverity(ticket.status)" />
+
+                        </td>
+
+
+                        <td>
+                            {{ticket.user.email}}
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editUser(ticket)" ></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteTicket(ticket.id)" ></button>
+                            </div>
+                        </td>
+
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                    <tr>
+                        <td colspan="8">No users found.</td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="loadingbody">
+                    <tr>
+                        <td colspan="8">Loading users data. Please wait.</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+    </div>
+    <p-dialog [(visible)]="userDialogue" [style]="{width: '450px'}" header="User " [modal]="true" class="p-fluid">
+
+        <ng-template pTemplate="content">
+            <div class="field">
+                <label for="firstname">firstname</label>
+                <input type="text" pInputText id="firstname" [(ngModel)]="user.firstName" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.firstName}"/>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.firstName">firstname is required.</small>
+            </div>
+            <div class="field">
+                <label for="lastname">lastname</label>
+                <input type="text" pInputText id="lastname" [(ngModel)]="user.lastName" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.lastName}"/>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.lastName">lastname is required.</small>
+            </div>
+            <div class="field">
+                <label for="email">email</label>
+                <input type="text" pInputText id="email" [(ngModel)]="user.email" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.email}"/>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.email">email is required.</small>
+            </div>
+            <div class="field">
+                <label for="role">role</label>
+                <p-dropdown id="role" required [showClear]="true" [ngClass]="{'ng-invalid ng-dirty' : submitted && selectRole.value===''}" [(ngModel)]="selectRole.value" [options]="roles">
+                </p-dropdown>
+
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && selectRole.value===''">role is required.</small>
+            </div>
+            <div class="field">
+                <label for="password">password</label>
+                <p-password  id="password" [toggleMask]="true"  [(ngModel)]="user.password" required  [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.password}" />
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.password">password is required.</small>
+            </div>
+            <div class="field">
+                <label for="employedID">employed ID</label>
+                <input type="text" pInputText id="employedID" [(ngModel)]="user.employedID" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.employedID}"/>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.employedID">firstname is required.</small>
+            </div>
+            <div class="field">
+                <label for="imageurl">image url</label>
+                <input type="text" pInputText id="imageurl" [(ngModel)]="user.urlimage" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.urlimage}"/>
+                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.urlimage">url image is required.</small>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="footer">
+            <button pButton pRipple label="Cancel" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+            <button pButton pRipple label="Save" icon="pi pi-check" class="p-button-text" (click)="user.id?updateUser(user):saveUser()"></button>
+        </ng-template>
+    </p-dialog>
+</div>

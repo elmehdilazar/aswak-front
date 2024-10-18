@@ -30,6 +30,7 @@ export class AppMenuComponent implements OnInit {
                 label: "setting",
                 items: [
                     {label: 'users',icon: "pi pi-fw pi-users",routerLink: ['/users']},
+                    {label: 'tickets',icon: "pi pi-fw pi-ticket",routerLink: ['/tickes']},
                     {label: 'logs',icon: "pi pi-fw pi-history",routerLink: ['/logs']}
                 ]
             },
