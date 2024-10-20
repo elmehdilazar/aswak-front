@@ -13,18 +13,26 @@
 
     <div #topbarmenu class="layout-topbar-menu" [ngClass]="{'layout-topbar-menu-mobile-active': layoutService.state.profileSidebarVisible}">
 
-        <button class="p-link layout-topbar-button">
-            <i class="pi pi-user"></i>
-            <span>Profile</span>
-        </button>
+
+
+        <button pRipple class="relative overflow-hidden w-full p-link flex align-items-center p-2 pl-3 text-color hover:surface-200 border-noround">
+        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" class="mr-2" shape="circle" />
+        <span class="inline-flex flex-column">
+                <span class="font-bold">{{ this.fullname}}</span>
+                <span class="text-sm">{{ this.role}}</span>
+            </span>
+    </button>
         <button (click)="logout()" class="p-link layout-topbar-button">
-            <i class="pi pi-sign-out"></i>
-            <span>logout</span>
-        </button>
+        <i class="pi pi-sign-out"></i>
+        <span>logout</span>
+    </button>
         <button class="p-link layout-topbar-button" [routerLink]="'/documentation'">
             <i class="pi pi-cog"></i>
             <span>Settings</span>
         </button>
+
+
+
     </div>
 
 </div>

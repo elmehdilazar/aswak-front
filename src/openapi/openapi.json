@@ -1230,6 +1230,36 @@
                 }
             }
         },
+        "/auth/getuser": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "operationId": "getUser",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/auth/": {
             "post": {
                 "tags": [
@@ -1789,6 +1819,23 @@
                 "properties": {
                     "token": {
                         "type": "string"
+                    },
+                    "user_id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "fullname": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string",
+                        "enum": [
+                            "SUPERADMIN",
+                            "PREPARER",
+                            "DISPATCHER",
+                            "DELIVERY_PERSON",
+                            "CRC"
+                        ]
                     }
                 }
             },

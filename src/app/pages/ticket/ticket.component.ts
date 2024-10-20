@@ -25,6 +25,9 @@ import {MessagesModule} from "primeng/messages";
 import {TicketRestControllerService} from "../../services/services/ticket-rest-controller.service";
 import {Ticket} from "../../services/models/ticket";
 import {TagModule} from "primeng/tag";
+import {cn} from "@fullcalendar/core/internal-common";
+import {TokenService} from "../../token.service";
+import {tick} from "@angular/core/testing";
 
 @Component({
     selector: 'app-users',
@@ -58,8 +61,15 @@ import {TagModule} from "primeng/tag";
 export class TicketComponent implements OnInit {
     tickets = []
 
-    user!: User;
-  ticket!:Ticket;
+    user!: any;
+    userinfo!:any;
+  ticket:Ticket={
+      description:'',
+      status:"OPEN",
+      subject:"",
+      user:null,
+  };
+
     selectRole:SelectItem={value:''}
 
     customers3: Customer[] = [];
@@ -85,20 +95,21 @@ export class TicketComponent implements OnInit {
     protected submitted: boolean;
     roles: SelectItem[] = [];
     protected msgs: any[];
+    visibleStatus: boolean =false;
+    statusTicketUpdate!: any;
+    private TicketUpadateId: any;
 
-    constructor(private ticketservice: TicketRestControllerService) {
+    constructor(private ticketservice: TicketRestControllerService,private userSERVICE:UsersService,private tokenService:TokenService ) {
     }
 
     ngOnInit() {
 
 this.fetchTicket();
         this.statuses = [
-            {label: 'Unqualified', value: 'unqualified'},
-            {label: 'Qualified', value: 'qualified'},
-            {label: 'New', value: 'new'},
-            {label: 'Negotiation', value: 'negotiation'},
-            {label: 'Renewal', value: 'renewal'},
-            {label: 'Proposal', value: 'proposal'}
+            {label: 'open', value: 'OPEN'},
+            {label: 'onhold', value: 'ONHOLD'},
+            {label: 'closed', value: 'CLOSED'},
+
         ];
         this.roles = [
             {label:"SUPERADMIN",value:"SUPERADMIN"},
@@ -172,11 +183,13 @@ this.fetchTicket();
 
     saveUser() {
         this.submitted = true;
-        this.user.role=this.selectRole.value;
-        console.log(this.user);
+this.ticket.user={id:this.tokenService.user_id,role:this.tokenService.role};
+
+console.log(this.ticket);
+
         this.ticketservice.createTicket$Response(
             {
-                body:null
+                body:this.ticket,
             }
         ).subscribe({
             next:()=>{
@@ -192,6 +205,7 @@ this.fetchTicket();
         })
     }
     fetchTicket(){
+
         this.ticketservice.getAllTickets$Response().subscribe({
             next: value => {
                 this.tickets = value.body;
@@ -209,7 +223,7 @@ this.fetchTicket();
 
 
 
-        this.ticketservice.deleteTicket$Response(id).subscribe({
+        this.ticketservice.deleteTicket$Response({id:id}).subscribe({
             next: (value) =>
             {           console.log(value);
                 this.showViaMessages("success","success Message","ticket deleted");
@@ -231,27 +245,7 @@ this.fetchTicket();
         this.user=user;
     }
 
-    updateUser(user) {
-        this.submitted=true;
-        user.role=this.selectRole.value;
 
-        console.log(user);
-        this.ticketservice.updateTicket$Response({
-            id:0,
-            body:null
-        }).subscribe({
-            next: value => {
-                console.log(value);
-                this.fetchTicket();
-                this.showViaMessages("success","Success Message","user updated");
-                this.userDialogue=false;
-            },
-            error:err => {
-                this.showViaMessages("error","error Message","user not updated");
-                console.log(err);
-            }
-        })
-    }
     showViaMessages(msgType:string,msgSummary,msgDetails) {
         this.msgs = [];
         this.msgs.push({ severity: msgType, summary: msgSummary, detail: msgDetails });
@@ -270,4 +264,40 @@ this.fetchTicket();
         }
     }
 
+    updateTicketStatus() {
+        if (!this.statusTicketUpdate || !this.TicketUpadateId) return;
+this.ticket.status=this.statusTicketUpdate;
+        this.ticketservice.updateTicket$Response(
+        {
+            id:this.TicketUpadateId,
+            body:this.ticket,
+        }
+        ).subscribe({
+            next: response => {
+                console.log('Order status updated successfully:', response.body);
+                this.showViaMessages("success","Success Message","ticket status updated");
+                this.visibleStatus = false;  // Close the dialog on success
+                this.fetchTicket();  // Optionally refresh the order list after update
+            },
+            error: err => {
+                this.visibleStatus = false;
+                this.showViaMessages("error","error Message","ticket status not updated");
+                console.error('Error updating order status:', err,this.ticket);
+            }
+        });
+    }
+
+    showDialogSatsus(status, ticket) {
+        this.statusTicketUpdate=status;
+        this.visibleStatus=true;
+        this.TicketUpadateId=ticket.id;
+        this.ticket={
+            status:ticket.status,
+            description:ticket.description,
+            subject:ticket.subject,
+            user:{
+            id:ticket.user.id,
+            role:ticket.user.role
+            }};
+    }
 }

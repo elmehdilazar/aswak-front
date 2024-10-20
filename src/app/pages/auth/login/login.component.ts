@@ -50,6 +50,9 @@ this.authService.login({
 }).subscribe({
     next:(res)=>{
         // todo save token
+        this.tokenService.role=res.role;
+        this.tokenService.fullname=res.fullname
+        this.tokenService.user_id=res.user_id;
         this.tokenService.token = res.token as string;
         this.router.navigateByUrl("/");
     },

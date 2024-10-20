@@ -5,14 +5,15 @@ import {environment} from "../../../environments/environment";
 import {User} from "../models/user";
 import {Observable} from "rxjs";
 import {UserResetControllerService} from "../../services/services/user-reset-controller.service";
+import {TokenService} from "../../token.service";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
-
-  constructor(private http:HttpClient ,private userService:UserResetControllerService) { }
+user!:any;
+  constructor(private http:HttpClient ,private userService:UserResetControllerService,private  tokenservice:TokenService) { }
    public getAllUser(){
     return  this.userService.getAllUsers();
     }
@@ -30,4 +31,9 @@ export class UsersService {
             body:user
         });
     }
+    getUserInfos(){
+
+return this.userService.getUserById$Response({
+    id:this.tokenservice.user_id
+});}
 }

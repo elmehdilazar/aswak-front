@@ -10,6 +10,8 @@ import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
 import { AuthenticationResponse } from '../models/authentication-response';
+import { getUser } from '../fn/authentication/get-user';
+import { GetUser$Params } from '../fn/authentication/get-user';
 import { login } from '../fn/authentication/login';
 import { Login$Params } from '../fn/authentication/login';
 import { register } from '../fn/authentication/register';
@@ -44,6 +46,35 @@ export class AuthenticationService extends BaseService {
   register(params: Register$Params, context?: HttpContext): Observable<{
 }> {
     return this.register$Response(params, context).pipe(
+      map((r: StrictHttpResponse<{
+}>): {
+} => r.body)
+    );
+  }
+
+  /** Path part for operation `getUser()` */
+  static readonly GetUserPath = '/auth/getuser';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getUser()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getUser$Response(params: GetUser$Params, context?: HttpContext): Observable<StrictHttpResponse<{
+}>> {
+    return getUser(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getUser$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getUser(params: GetUser$Params, context?: HttpContext): Observable<{
+}> {
+    return this.getUser$Response(params, context).pipe(
       map((r: StrictHttpResponse<{
 }>): {
 } => r.body)
