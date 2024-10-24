@@ -173,6 +173,34 @@
                         }
                     }
                 }
+            },
+            "delete": {
+                "tags": [
+                    "woo-order-rest-controller"
+                ],
+                "operationId": "deleteOrder",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         },
         "/users/{id}": {
@@ -524,7 +552,7 @@
                 "tags": [
                     "order-reset-controller"
                 ],
-                "operationId": "deleteOrder",
+                "operationId": "deleteOrder_2",
                 "parameters": [
                     {
                         "name": "id",
@@ -1328,6 +1356,27 @@
                 }
             }
         },
+        "/woocommerce/total-orders-price": {
+            "get": {
+                "tags": [
+                    "dashhboard-contoller"
+                ],
+                "operationId": "getGlobalTotalOrdersPrice",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "number",
+                                    "format": "double"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/woocommerce/products": {
             "get": {
                 "tags": [
@@ -1368,6 +1417,70 @@
                 }
             }
         },
+        "/woocommerce/orders-per-month": {
+            "get": {
+                "tags": [
+                    "dashhboard-contoller"
+                ],
+                "operationId": "getOrdersPerMonth",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/woocommerce/lastOrders": {
+            "get": {
+                "tags": [
+                    "dashhboard-contoller"
+                ],
+                "operationId": "lastOrders",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/woocommerce/customers": {
+            "get": {
+                "tags": [
+                    "woo-customer-rest-controller"
+                ],
+                "operationId": "getALlOrders_1",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/woocommerce/count": {
             "get": {
                 "tags": [
@@ -1381,6 +1494,30 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/WooCommerceCountsDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/woocommerce/costumers-per-month": {
+            "get": {
+                "tags": [
+                    "dashhboard-contoller"
+                ],
+                "operationId": "getCostumersPerMonth",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer",
+                                        "format": "int32"
+                                    }
                                 }
                             }
                         }
@@ -1481,6 +1618,36 @@
                                     "items": {
                                         "$ref": "#/components/schemas/Product"
                                     }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/woocommerce/customers/{id}": {
+            "delete": {
+                "tags": [
+                    "woo-customer-rest-controller"
+                ],
+                "operationId": "deleteOrder_1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
                                 }
                             }
                         }

@@ -11,6 +11,7 @@ import {Message} from "primeng/api";
 import {NgForOf, NgIf} from "@angular/common";
 import {AuthenticationService} from "../../../services/services/authentication.service";
 import {TokenService} from "../../../token.service";
+import {LogRestControllerService} from "../../../services/services/log-rest-controller.service";
 
 @Component({
   selector: 'app-login',
@@ -36,7 +37,7 @@ export class LoginComponent implements OnInit{
 
 
     messages: Message[] | undefined;
-constructor(private router:Router,private authService:AuthenticationService, private tokenService: TokenService) {
+constructor(private router:Router,private authService:AuthenticationService,private logsservice :LogRestControllerService, private tokenService: TokenService) {
 }
     ngOnInit(): void {
        this.messages=[];
@@ -54,6 +55,7 @@ this.authService.login({
         this.tokenService.fullname=res.fullname
         this.tokenService.user_id=res.user_id;
         this.tokenService.token = res.token as string;
+        this.loginsert("user logged  ","login");
         this.router.navigateByUrl("/");
     },
     error: (err)=> {
@@ -66,5 +68,21 @@ this.authService.login({
         }
         }
 })
+    }
+    private  loginsert(dataupdated,operation){
+        this.logsservice.createLog$Response({
+            body:{
+                details:dataupdated+",by user "+this.tokenService.fullname,
+                operation:operation,
+                user: {
+                    id:this.tokenService.user_id,
+                    role:this.tokenService.role,
+                }
+            }
+        }).subscribe({
+            error: err => {
+                console.log(err);
+            }
+        });
     }
 }

@@ -12,6 +12,7 @@ import {SelectItem} from "primeng/api";
 import {ImageModule} from "primeng/image";
 import {TagModule} from "primeng/tag";
 import {environment} from "../../../environments/environment";
+import {TokenService} from "../../token.service";
 
 @Component({
   selector: 'app-products',
@@ -54,7 +55,7 @@ export class ProductsComponent implements OnInit{
     roles: SelectItem[] = [];
     protected msgs: any[];
 
-    constructor(private woocomm:WooCommerceService) {
+    constructor(private woocomm:WooCommerceService,protected token:TokenService) {
 }
 
     ngOnInit(): void {

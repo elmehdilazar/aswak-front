@@ -11,8 +11,8 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { createOrder } from '../fn/order-reset-controller/create-order';
 import { CreateOrder$Params } from '../fn/order-reset-controller/create-order';
-import { deleteOrder } from '../fn/order-reset-controller/delete-order';
-import { DeleteOrder$Params } from '../fn/order-reset-controller/delete-order';
+import { deleteOrder2 } from '../fn/order-reset-controller/delete-order-2';
+import { DeleteOrder2$Params } from '../fn/order-reset-controller/delete-order-2';
 import { getAllOrders } from '../fn/order-reset-controller/get-all-orders';
 import { GetAllOrders$Params } from '../fn/order-reset-controller/get-all-orders';
 import { getOrderById1 } from '../fn/order-reset-controller/get-order-by-id-1';
@@ -77,27 +77,27 @@ export class OrderResetControllerService extends BaseService {
     );
   }
 
-  /** Path part for operation `deleteOrder()` */
-  static readonly DeleteOrderPath = '/orders/{id}';
+  /** Path part for operation `deleteOrder2()` */
+  static readonly DeleteOrder2Path = '/orders/{id}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `deleteOrder()` instead.
+   * To access only the response body, use `deleteOrder2()` instead.
    *
    * This method doesn't expect any request body.
    */
-  deleteOrder$Response(params: DeleteOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-    return deleteOrder(this.http, this.rootUrl, params, context);
+  deleteOrder2$Response(params: DeleteOrder2$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deleteOrder2(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `deleteOrder$Response()` instead.
+   * To access the full response (for headers, for example), `deleteOrder2$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  deleteOrder(params: DeleteOrder$Params, context?: HttpContext): Observable<void> {
-    return this.deleteOrder$Response(params, context).pipe(
+  deleteOrder2(params: DeleteOrder2$Params, context?: HttpContext): Observable<void> {
+    return this.deleteOrder2$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }

@@ -8,3 +8,4 @@ export { InterFaceCarteRestControllerService } from './services/inter-face-carte
 export { LogRestControllerService } from './services/log-rest-controller.service';
 export { AuthenticationService } from './services/authentication.service';
 export { DashhboardContollerService } from './services/dashhboard-contoller.service';
+export { WooCustomerRestControllerService } from './services/woo-customer-rest-controller.service';

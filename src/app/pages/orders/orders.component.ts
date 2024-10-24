@@ -12,6 +12,12 @@ import {DialogModule} from "primeng/dialog";
 import {CarouselModule} from "primeng/carousel";
 import {DropdownModule} from "primeng/dropdown";
 import {FormsModule} from "@angular/forms";
+import {MessagesModule} from "primeng/messages";
+import {environment} from "../../../environments/environment";
+import {StrictHttpResponse} from "../../services/strict-http-response";
+import {LogRestControllerService} from "../../services/services/log-rest-controller.service";
+import {User} from "../../services/models/user";
+import {TokenService} from "../../token.service";
 
 
 
@@ -31,7 +37,8 @@ import {FormsModule} from "@angular/forms";
         DialogModule,
         CarouselModule,
         DropdownModule,
-        FormsModule
+        FormsModule,
+        MessagesModule
     ],
     templateUrl: './orders.component.html',
     styleUrl: './orders.component.scss'
@@ -43,8 +50,8 @@ OrderUpadateId:string;
 
 
     statuses: any[] = [];
-
-
+  slugProd={ categories:[{slug:""}] };
+visibleMap=false;
     rowGroupMetadata: any;
 
 
@@ -63,21 +70,34 @@ OrderUpadateId:string;
     protected msgs: any[];
     responsiveOptions: any[] | undefined;
     productsCoresel: any;
-    constructor(private orderService: WooCommerceService) {
+    constructor(private orderService: WooCommerceService, private logsservice :LogRestControllerService, protected token :TokenService) {
     }
 
     ngOnInit(): void {
 
         this.refreshOrders();
         this.statuses = [
-            { label: 'Pending', value: 'pending' },
+
             { label: 'Processing', value: 'processing' },
-            { label: 'On Hold', value: 'on-hold' },
-            { label: 'Completed', value: 'completed' },
-            { label: 'Cancelled', value: 'cancelled' },
-            { label: 'Refunded', value: 'refunded' },
-            { label: 'Failed', value: 'failed' }
+            { label: 'Preparing', value: 'preparing' },
+            { label: 'Prepared', value: 'prepared' }
+
         ];
+        if(this.token.role=='SUPERADMIN'  || this.token.role=='CRC'){
+            this.statuses.push({ label: 'Pending', value: 'pending' },
+                { label: 'On Hold', value: 'on-hold' },
+                { label: 'Completed', value: 'completed' },
+                { label: 'Cancelled', value: 'cancelled' },
+                { label: 'Refunded', value: 'refunded' },
+                { label: 'Failed', value: 'failed' },
+                { label: 'Valid', value: 'valid' },
+                { label: 'Delivered', value: 'delivered' },
+)
+        }else if(this.token.role=='DISPATCHER' ){
+            this.statuses.push(
+                { label: 'Valid', value: 'valid' },
+            );
+        }
         this.responsiveOptions = [
             {
                 breakpoint: '1199px',
@@ -128,6 +148,14 @@ OrderUpadateId:string;
                 return 'danger';
             case 'cancelled':
                 return 'danger';
+            case 'prepared':
+                return 'help';
+            case 'preparing':
+                return 'warning';
+            case 'valid':
+                return 'success';
+            case 'delivered':
+                return 'success';
         }
     }
     visible: boolean = false;
@@ -153,12 +181,14 @@ OrderUpadateId:string;
 
         this.orderService.updateOrderStatus$Response(this.OrderUpadateId, this.statusOrderUpdate).subscribe({
             next: response => {
-                console.log('Order status updated successfully:', response.body);
+                this.showViaMessages("success","success Message","Order status updated successfully");
+       this.loginsert("Order status updated to "+this.statusOrderUpdate,"update");
                 this.visibleStatus = false;  // Close the dialog on success
                 this.refreshOrders();  // Optionally refresh the order list after update
             },
             error: err => {
-                console.error('Error updating order status:', err);
+                this.showViaMessages("error","error Message","Error updating order status");
+
             }
         });
     }
@@ -176,4 +206,53 @@ console.log(err);
             }
         });
     }
+
+    deletOrder(id) {
+        this.orderService.deletOrder({id:id}).subscribe({
+            next: response => {
+
+                this.visibleStatus = false;  // Close the dialog on success
+                this.refreshOrders();
+                this.showViaMessages("success","success Message","order deleted");
+                // Optionally refresh the order list after update
+            },
+            error: err => {
+                this.showViaMessages("error","error Message","order not deleted");
+            }
+        });
+    }
+    showViaMessages(msgType:string,msgSummary,msgDetails) {
+        this.msgs = [];
+        this.msgs.push({ severity: msgType, summary: msgSummary, detail: msgDetails });
+    }
+
+    showMapProduct(product_id: any) {
+        let data!:any;
+   this.orderService.getProduct(product_id).subscribe({
+       next: value => {
+           this.visibleMap=true;
+           console.log(value.body);
+           data=value.body;
+           this.slugProd.categories[0].slug=data.categories[0].slug;
+       }
+   })
+
+    }
+private  loginsert(dataupdated,operation){
+    this.logsservice.createLog$Response({
+        body:{
+            details:dataupdated+",by user "+this.token.fullname,
+            operation:operation,
+            user: {
+                id:this.token.user_id,
+                role:this.token.role,
+            }
+        }
+    }).subscribe({
+        error: err => {
+            console.log(err);
+        }
+    });
+}
+    protected readonly environment = environment;
 }

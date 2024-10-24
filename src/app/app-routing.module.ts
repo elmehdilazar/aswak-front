@@ -10,6 +10,9 @@ import {LoginComponent} from "./pages/auth/login/login.component";
 import {authGuard} from "./services/guard/auth.guard";
 import {MapComponent} from "./pages/map/map.component";
 import {TicketComponent} from "./pages/ticket/ticket.component";
+import {ProfileComponent} from "./pages/profile/profile.component";
+import {CustomersComponent} from "./pages/customers/customers.component";
+import {adminprotectGuard} from "./services/guard/adminprotect.guard";
 
 
 @NgModule({
@@ -21,10 +24,12 @@ import {TicketComponent} from "./pages/ticket/ticket.component";
                 children: [
                     {path:"products",component:ProductsComponent},
                     {path:"orders",component:OrdersComponent},
-                    {path:"users",component:UsersComponent},
-                    {path:"logs",component:LogsComponent},
+                    {path:"users",component:UsersComponent,canActivate:[adminprotectGuard]},
+                    {path:"logs",component:LogsComponent,canActivate:[adminprotectGuard]},
                     {path:"maps",component:MapComponent},
                     {path:"tickes",component:TicketComponent},
+                    {path:"profile",component:ProfileComponent},
+                    {path:"customers",component:CustomersComponent},
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
                     { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },

@@ -55,7 +55,8 @@ export class UsersComponent implements OnInit {
 
     customers1: Customer[] = [];
     users = []
-    user!: User;
+    user!: any;
+    userupdate!:any;
     selectRole:SelectItem={value:''}
     customers2: Customer[] = [];
 
@@ -180,7 +181,6 @@ export class UsersComponent implements OnInit {
             email: "",
             employedID: "",
             firstName: "",
-            id: null,
             lastName: "",
             password: "",
             role: undefined,
@@ -252,10 +252,18 @@ export class UsersComponent implements OnInit {
 
     updateUser(user) {
         this.submitted=true;
-        user.role=this.selectRole.value;
 
+        this.userupdate = {
+            email:user.email,
+            employedID:user.employedID,
+            firstName:user.firstName,
+            lastName: user.lastName,
+            password: user.password,
+            role:this.selectRole.value,
+            urlimage: user.urlimage
+        };
         console.log(user);
-        this.userservice.UpdateUser(user).subscribe({
+        this.userservice.UpdateUser(this.user.id,this.userupdate).subscribe({
             next: value => {
                 console.log(value);
                 this.fetchUser();
@@ -263,6 +271,7 @@ export class UsersComponent implements OnInit {
                 this.userDialogue=false;
             },
             error:err => {
+                console.log(this.user);
                 this.showViaMessages("error","error Message","user not updated");
                 console.log(err);
             }

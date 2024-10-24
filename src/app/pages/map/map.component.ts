@@ -139,7 +139,7 @@ fetchCategoris(){
         console.log(this.file,this.selectName)
   this.mapsI.createMap(this.file,this.selectName.value).subscribe({
       next: value => {
-          console.log(value);
+          this.fetchMap();
       },
       error:err => {
           console.log(err);

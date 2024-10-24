@@ -144,11 +144,7 @@
                 <input type="text" pInputText id="employedID" [(ngModel)]="user.employedID" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.employedID}"/>
                 <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.employedID">firstname is required.</small>
             </div>
-            <div class="field">
-                <label for="imageurl">image url</label>
-                <input type="text" pInputText id="imageurl" [(ngModel)]="user.urlimage" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !user.urlimage}"/>
-                <small class="ng-dirty ng-invalid" *ngIf="submitted && !user.urlimage">url image is required.</small>
-            </div>
+
         </ng-template>
 
         <ng-template pTemplate="footer">

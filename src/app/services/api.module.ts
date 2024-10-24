@@ -14,6 +14,7 @@ import { InterFaceCarteRestControllerService } from './services/inter-face-carte
 import { LogRestControllerService } from './services/log-rest-controller.service';
 import { AuthenticationService } from './services/authentication.service';
 import { DashhboardContollerService } from './services/dashhboard-contoller.service';
+import { WooCustomerRestControllerService } from './services/woo-customer-rest-controller.service';
 
 /**
  * Module that provides all services and configuration.
@@ -33,6 +34,7 @@ import { DashhboardContollerService } from './services/dashhboard-contoller.serv
     LogRestControllerService,
     AuthenticationService,
     DashhboardContollerService,
+    WooCustomerRestControllerService,
     ApiConfiguration
   ],
 })

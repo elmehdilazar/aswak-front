@@ -99,7 +99,7 @@ export class TicketComponent implements OnInit {
     statusTicketUpdate!: any;
     private TicketUpadateId: any;
 
-    constructor(private ticketservice: TicketRestControllerService,private userSERVICE:UsersService,private tokenService:TokenService ) {
+    constructor(private ticketservice: TicketRestControllerService,private userSERVICE:UsersService,protected tokenService:TokenService ) {
     }
 
     ngOnInit() {
@@ -231,7 +231,7 @@ console.log(this.ticket);
 
             },
             error:err => {
-                this.showViaMessages("error","error Message","teicket not deleted");
+                this.showViaMessages("error","error Message","ticket not deleted");
                 console.log(err,id);
             }
         })

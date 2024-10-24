@@ -10,26 +10,26 @@
                         <i class="pi pi-shopping-cart text-blue-500 text-xl"></i>
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">24 new </span>
-                <span class="text-500">since last visit</span>
+                <!--<span class="text-green-500 font-medium">24 new</span>
+                <span class="text-500">since last visit</span>-->
             </div>
         </div>
-        <div class="col-12 lg:col-6 xl:col">
+        <div class="col-12 lg:col-6 xl:col" *ngIf="this.token.role=='SUPERADMIN'">
             <div class="card mb-0">
                 <div class="flex justify-content-between mb-3">
                     <div>
                         <span class="block text-500 font-medium mb-3">Revenue</span>
-                        <div class="text-900 font-medium text-xl">$2.100</div>
+                        <div class="text-900 font-medium text-xl">${{this.totalglobal}}</div>
                     </div>
                     <div class="flex align-items-center justify-content-center bg-orange-100 border-round" [ngStyle]="{width: '2.5rem', height: '2.5rem'}">
                         <i class="pi pi-map-marker text-orange-500 text-xl"></i>
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">%52+ </span>
-                <span class="text-500">since last week</span>
+                <!--<span class="text-green-500 font-medium">%52+ </span>
+                <span class="text-500">since last week</span-->
             </div>
         </div>
-        <div class="col-12 lg:col-6 xl:col">
+        <div class="col-12 lg:col-6 xl:col" *ngIf="this.token.role!=='PREPARER'">
             <div class="card mb-0">
                 <div class="flex justify-content-between mb-3">
                     <div>
@@ -40,11 +40,11 @@
                         <i class="pi pi-users text-cyan-500 text-xl"></i>
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">520  </span>
-                <span class="text-500">newly registered</span>
+                <!--<span class="text-green-500 font-medium">520  </span>
+                <span class="text-500">newly registered</span>-->
             </div>
         </div>
-        <div class="col-12 lg:col-6 xl:col">
+        <div class="col-12 lg:col-6 xl:col"  *ngIf="this.token.role=='SUPERADMIN'">
             <div class="card mb-0">
                 <div class="flex justify-content-between mb-3">
                     <div>
@@ -55,8 +55,8 @@
                         <i class="pi pi-user text-cyan-500 text-xl"></i>
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">520  </span>
-                <span class="text-500">newly registered</span>
+              <!--  <span class="text-green-500 font-medium">520  </span>
+                <span class="text-500">newly registered</span>-->
             </div>
         </div>
         <div class="col-12 lg:col-6 xl:col">
@@ -70,38 +70,43 @@
                         <i class="pi pi-box text-purple-500 text-xl"></i>
                     </div>
                 </div>
-                <span class="text-green-500 font-medium">85 </span>
-                <span class="text-500">responded</span>
+              <!--<span class="text-green-500 font-medium">85 </span>
+                <span class="text-500">responded</span>-->
             </div>
         </div>
 
         <div *ngIf="true" class="col-12 xl:col-6">
             <div class="card">
-                <h5>Recent Sales</h5>
-                <p-table [value]="products" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+                <h5>Recent Orders</h5>
+                <p-table [value]="this.orders"  responsiveLayout="scroll">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th>Image</th>
+                            <th>id</th>
                             <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
-                            <th pSortableColumn="price">Price <p-sortIcon field="price"></p-sortIcon></th>
+                            <th pSortableColumn="price">total <p-sortIcon field="price"></p-sortIcon></th>
                             <th>View</th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="body" let-product>
+                    <ng-template pTemplate="body" let-order>
                         <tr>
-                            <td style="width: 15%; min-width: 5rem;">
-                                <img src="assets/demo/images/product/{{product.image}}" class="shadow-4" alt="{{product.name}}" width="50">
+                            <td>
+                                {{order.id}}
                             </td>
-                            <td style="width: 35%; min-width: 7rem;">{{product.name}}</td>
-                            <td style="width: 35%; min-width: 8rem;">{{product.price | currency:'USD'}}</td>
+                            <td style="width: 35%; min-width: 7rem;">{{order.status}}</td>
+                            <td style="width: 35%; min-width: 8rem;">{{order.total | currency:'USD'}}</td>
                             <td style="width: 15%;">
-                                <button pButton pRipple type="button" icon="pi pi-search" class="p-button p-component p-button-text p-button-icon-only"></button>
+                                <p-button  (onClick)="showDialog(order.line_items)"
+
+                                           icon="pi pi-box"
+                                           badge="{{order.line_items.length}}"
+                                           severity="help"
+                                />
                             </td>
                         </tr>
                     </ng-template>
                 </p-table>
             </div>
-            <div class="card">
+            <div class="card" *ngIf="false">
                 <div class="flex justify-content-between align-items-center mb-5">
                     <h5>Best Selling Products</h5>
                     <div>
@@ -186,13 +191,13 @@
             </div>
         </div>
 
-        <div *ngIf="true" class="col-12 xl:col-6" >
+        <div *ngIf="this.token.role=='SUPERADMIN'" class="col-12 xl:col-6" >
             <div class="card">
-                <h5>Sales Overview</h5>
+                <h5>Orders Overview</h5>
                 <p-chart type="line" [data]="chartData" [options]="chartOptions"></p-chart>
             </div>
 
-            <div class="card">
+            <div class="card" *ngIf="false">
                 <div class="flex align-items-center justify-content-between mb-4">
                     <h5>Notifications</h5>
                     <div>
@@ -240,5 +245,46 @@
 
 
     </div>
+        <p-dialog
+            header="Products"
+            [(visible)]="visible"
+            [modal]="true"
+            [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+            [style]="{ width: '50vw' }"
+            [draggable]="false"
+            [resizable]="false">
+
+            <p-carousel
+                [value]="productsCoresel"
+                [numVisible]="3"
+                [numScroll]="3"
+                [circular]="false"
+                [responsiveOptions]="responsiveOptions">
+                <ng-template let-product pTemplate="item">
+                    <div class="border-1 surface-border border-round m-2 p-3">
+                        <div class="mb-3">
+                            <div class="relative mx-auto">
+                                <img
+                                    src="{{ product.image.src }}"
+                                    [alt]="product.name"
+                                    class="w-full border-round" />
+
+                            </div>
+                        </div>
+                        <div class="mb-3 font-medium">
+                            {{ product.name }}
+                        </div>
+                        <div class="flex justify-content-between align-items-center">
+                            <div class="mt-0 font-semibold text-xl">
+                                {{ '$' + product.price }}
+                            </div>
+
+                        </div>
+                    </div>
+                </ng-template>
+            </p-carousel>
+
+
+        </p-dialog>
 </div>
 

@@ -9,6 +9,8 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { deleteOrder } from '../fn/woo-order-rest-controller/delete-order';
+import { DeleteOrder$Params } from '../fn/woo-order-rest-controller/delete-order';
 import { getALlOrders } from '../fn/woo-order-rest-controller/get-a-ll-orders';
 import { GetALlOrders$Params } from '../fn/woo-order-rest-controller/get-a-ll-orders';
 import { getOrderById } from '../fn/woo-order-rest-controller/get-order-by-id';
@@ -70,6 +72,31 @@ export class WooOrderRestControllerService extends BaseService {
    */
   updateOrder(params: UpdateOrder$Params, context?: HttpContext): Observable<string> {
     return this.updateOrder$Response(params, context).pipe(
+      map((r: StrictHttpResponse<string>): string => r.body)
+    );
+  }
+
+  /** Path part for operation `deleteOrder()` */
+  static readonly DeleteOrderPath = '/woocommerce/orders/{id}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `deleteOrder()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deleteOrder$Response(params: DeleteOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+    return deleteOrder(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `deleteOrder$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  deleteOrder(params: DeleteOrder$Params, context?: HttpContext): Observable<string> {
+    return this.deleteOrder$Response(params, context).pipe(
       map((r: StrictHttpResponse<string>): string => r.body)
     );
   }

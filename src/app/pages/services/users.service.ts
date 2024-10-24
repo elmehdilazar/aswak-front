@@ -25,11 +25,12 @@ user!:any;
       return this.userService.deleteUser({id:id});
     }
 
-    UpdateUser(user) {
+    UpdateUser(id,user) {
+      console.log(user);
         return this.userService.updateUser$Response({
-            id:user.id,
-            body:user
-        });
+           id:id,
+            body:user});
+
     }
     getUserInfos(){
 

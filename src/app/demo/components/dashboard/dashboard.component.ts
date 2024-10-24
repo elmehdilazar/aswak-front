@@ -6,6 +6,9 @@ import { Subscription, debounceTime } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import {WooCOunt} from "../../../modules/WooCOunt";
 import {WooCommerceService} from "../../../pages/services/woo-commerce.service";
+import {Order} from "../../../services/models/order";
+import {TokenService} from "../../../token.service";
+import {DashhboardContollerService} from "../../../services/services/dashhboard-contoller.service";
 
 @Component({
     templateUrl: './dashboard.component.html',
@@ -13,28 +16,42 @@ import {WooCommerceService} from "../../../pages/services/woo-commerce.service";
 export class DashboardComponent implements OnInit, OnDestroy {
 
     items!: MenuItem[];
-
+   orders!:any;
     products!: Product[];
 Counts:WooCOunt={ countOrder:0,countProduct:0,countCustomer:0,countUser:0};
     chartData: any;
-
+    responsiveOptions: any[] | undefined;
     chartOptions: any;
-
+    productsCoresel: any;
     subscription!: Subscription;
+     visible =false;
+    totalglobal: any;
 
-    constructor(private productService: ProductService, public layoutService: LayoutService , private WooServcie:WooCommerceService) {
+    constructor(protected token:TokenService, private productService: ProductService, public layoutService: LayoutService , private WooServcie:WooCommerceService,private das:DashhboardContollerService ) {
         this.subscription = this.layoutService.configUpdate$
         .pipe(debounceTime(25))
         .subscribe((config) => {
             this.initChart();
         });
+        this.das.getGlobalTotalOrdersPrice$Response().subscribe({
+            next:value=>{
+                this.totalglobal=value.body
+            }
+        })
     }
 
     ngOnInit() {
+
+        this.WooServcie.lastorder().subscribe({
+            next: value => {
+                this.orders=value.body;
+            },
+
+        })
         this.WooServcie.getCount().subscribe(
             {
                 next: value => {
-                    this.Counts={ countOrder:value.body.productCount,countProduct:value.body.orderCount,countUser:value.body.userCount,countCustomer:value.body.customerCount}
+                    this.Counts={ countOrder:value.body.orderCount,countProduct:value.body.productCount,countUser:value.body.userCount,countCustomer:value.body.customerCount}
                 },
                 error: err => {
                    console.log(err);
@@ -43,7 +60,23 @@ Counts:WooCOunt={ countOrder:0,countProduct:0,countCustomer:0,countUser:0};
         )
         this.initChart();
         this.productService.getProductsSmall().then(data => this.products = data);
-
+        this.responsiveOptions = [
+            {
+                breakpoint: '1199px',
+                numVisible: 1,
+                numScroll: 1
+            },
+            {
+                breakpoint: '991px',
+                numVisible: 2,
+                numScroll: 1
+            },
+            {
+                breakpoint: '767px',
+                numVisible: 1,
+                numScroll: 1
+            }
+        ];
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
             { label: 'Remove', icon: 'pi pi-fw pi-minus' }
@@ -57,19 +90,19 @@ Counts:WooCOunt={ countOrder:0,countProduct:0,countCustomer:0,countUser:0};
         const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
 
         this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],
             datasets: [
                 {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
+                    label: 'Orders',
+                    data: [0, 0, 0, 0, 0, 0, 0,0,0,0,0,0],
                     fill: false,
                     backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
                     borderColor: documentStyle.getPropertyValue('--bluegray-700'),
                     tension: .4
                 },
                 {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
+                    label: 'Customers',
+                    data: [0, 0, 0, 0, 0, 0, 0,0,0,0,0,0],
                     fill: false,
                     backgroundColor: documentStyle.getPropertyValue('--green-600'),
                     borderColor: documentStyle.getPropertyValue('--green-600'),
@@ -77,6 +110,18 @@ Counts:WooCOunt={ countOrder:0,countProduct:0,countCustomer:0,countUser:0};
                 }
             ]
         };
+        this.WooServcie.getOrdersPerMonth().subscribe({
+            next: value => {
+                console.log(value.body);
+                this.chartData.datasets[0].data=value.body;
+            }
+        })
+        this.WooServcie.getCustomerPerMonth().subscribe({
+            next: value => {
+                console.log(value.body);
+                this.chartData.datasets[1].data=value.body;
+            }
+        })
 
         this.chartOptions = {
             plugins: {
@@ -114,4 +159,12 @@ Counts:WooCOunt={ countOrder:0,countProduct:0,countCustomer:0,countUser:0};
             this.subscription.unsubscribe();
         }
     }
+    showDialog(products) {
+        this.visible = true;
+        this.showCaresel(products);
+    }
+    showCaresel(Products){
+        this.productsCoresel=Products;
+    }
+
 }

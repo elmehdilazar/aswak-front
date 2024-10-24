@@ -1,8 +1,9 @@
 <div class="grid">
     <div class="col-12">
         <div class="card">
+            <p-messages [value]="msgs"></p-messages>
             <h4>Orders</h4>
-            <p-table #dt1  [value]="Orders" dataKey="id" [rows]="5" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true"  [rowsPerPageOptions]="[5, 10, 20]" [globalFilterFields]="['id','name','stock_status','price','categories.name','image']" responsiveLayout="scroll">
+            <p-table #dt1  [value]="Orders" dataKey="id" [rows]="5" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true"  [rowsPerPageOptions]="[5, 10, 20]" [globalFilterFields]="['id','name','stock_status','price','date_created','image']" responsiveLayout="scroll">
                 <ng-template pTemplate="caption">
                     <div class="flex justify-content-between flex-column sm:flex-row">
                         <div class="mb-2">
@@ -43,8 +44,8 @@
                         </th>
                         <th style="min-width: 10rem">
                             <div class="flex justify-content-between align-items-center">
-                                category
-                                <p-columnFilter type="text" field="categories.name" display="menu" placeholder="Search by category"></p-columnFilter>
+                                order date
+                                <p-columnFilter type="date" field="date_created" display="menu" placeholder="Search by date_created"></p-columnFilter>
                             </div>
                         </th>
 
@@ -55,7 +56,7 @@
 products
                             </div>
                         </th>
-                        <th style="min-width: 10rem">
+                        <th *ngIf="this.token.role=='SUPERADMIN'" style="min-width: 10rem">
                             <div class="flex justify-content-between align-items-center">
                                 action
 
@@ -80,7 +81,7 @@ products
                             {{order.total}}
                         </td>
                         <td>
-                            {{ order.date_created_gmt | date: "dd/mm/yyyy"}}
+                            {{ order.date_created | date: 'M/d/yy'}}
                         </td>
                         <td>
                             <p-button  (onClick)="showDialog(order.line_items)"
@@ -91,10 +92,10 @@ products
                                  />
 
                         </td>
-                        <td>
+                        <td *ngIf="this.token.role=='SUPERADMIN'">
                             <div class="flex">
-                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2"  ></button>
-                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning"  ></button>
+
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deletOrder(order.id)" ></button>
                             </div>
                         </td>
 
@@ -148,7 +149,9 @@ products
                         <div class="mt-0 font-semibold text-xl">
                             {{ '$' + product.price }}
                         </div>
-
+                        <div class="mt-0 font-semibold text-xl">
+                            <p-button icon="pi pi-search" [rounded]="true" [text]="true" (click)="showMapProduct(product.product_id)" severity="success " />
+                        </div>
                     </div>
                 </div>
             </ng-template>
@@ -179,6 +182,14 @@ products
     </div>
 </ng-template>
 
+    </p-dialog>
+    <p-dialog header="Update Order Status" [modal]="true" [(visible)]="visibleMap" [style]="{ width: '25rem' ,height:'20em' }" [draggable]="false" [resizable]="false">
+        <p-image
+            [src]="environment.backendhost+'/mapsimage/'+  this.slugProd.categories[0].slug+'.png'"
+            alt="Image"
+            width="100%"
+
+            [preview]="true" />
     </p-dialog>
 
 </div>

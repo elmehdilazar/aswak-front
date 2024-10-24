@@ -7,24 +7,22 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 
-export interface DeleteOrder$Params {
-  id: number;
+export interface GetCostumersPerMonth$Params {
 }
 
-export function deleteOrder(http: HttpClient, rootUrl: string, params: DeleteOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, deleteOrder.PATH, 'delete');
+export function getCostumersPerMonth(http: HttpClient, rootUrl: string, params?: GetCostumersPerMonth$Params, context?: HttpContext): Observable<StrictHttpResponse<Array<number>>> {
+  const rb = new RequestBuilder(rootUrl, getCostumersPerMonth.PATH, 'get');
   if (params) {
-    rb.path('id', params.id, {});
   }
 
   return http.request(
-    rb.build({ responseType: 'text', accept: '*/*', context })
+    rb.build({ responseType: 'json', accept: 'application/json', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      return r as StrictHttpResponse<Array<number>>;
     })
   );
 }
 
-deleteOrder.PATH = '/orders/{id}';
+getCostumersPerMonth.PATH = '/woocommerce/costumers-per-month';

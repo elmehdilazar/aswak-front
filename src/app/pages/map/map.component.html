@@ -83,7 +83,7 @@
             </div>
             <div class="field">
                 <label for="map">map image</label>
-                <p-fileUpload id="map" mode="basic"  chooseLabel="Choose"  name="demo[]" url="./upload.php" accept="image/*" [maxFileSize]="1000000" (onSelect)="onUpload($event)"></p-fileUpload>
+                <p-fileUpload id="map" mode="basic"  chooseLabel="Choose"  name="demo[]" url="./upload.php" accept="image/*" [maxFileSize]="3000000" (onSelect)="onUpload($event)"></p-fileUpload>
                 <small class="ng-dirty ng-invalid" *ngIf="submitted && !file">file is required.</small>
             </div>
 
